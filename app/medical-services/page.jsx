@@ -9,66 +9,62 @@ import { useState } from 'react';
 export default function MedicalServices() {
     const router = useRouter();
     const [searchQuery, setSearchQuery] = useState('');
-    const [selectedService, setSelectedService] = useState('');
+    const [sortOption, setSortOption] = useState('');
 
     const services = [
         {
             id: 1,
-            title: "Doctor Home Visits",
-            description: "Professional medical consultations in the comfort of your home",
+            title: 'Doctor Home Visits',
+            description: 'Professional medical consultations in the comfort of your home',
             icon: <Stethoscope className="w-6 h-6" />,
-            price: "₹1500/visit",
+            priceLabel: '₹1500/visit',
+            priceValue: 1500,
             rating: 4.8,
-            features: [
-                "General Health Checkup",
-                "Specialist Consultations",
-                "Prescription Services",
-                "Follow-up Care"
-            ]
+            features: ['General Health Checkup', 'Specialist Consultations', 'Prescription Services', 'Follow-up Care']
         },
         {
             id: 2,
-            title: "Physiotherapy",
-            description: "Expert physiotherapy services for rehabilitation and pain management",
+            title: 'Physiotherapy',
+            description: 'Expert physiotherapy services for rehabilitation and pain management',
             icon: <Stethoscope className="w-6 h-6" />,
-            price: "₹1200/session",
+            priceLabel: '₹1200/session',
+            priceValue: 1200,
             rating: 4.9,
-            features: [
-                "Post-operative Rehabilitation",
-                "Sports Injury Recovery",
-                "Chronic Pain Management",
-                "Mobility Enhancement"
-            ]
+            features: ['Post-operative Rehabilitation', 'Sports Injury Recovery', 'Chronic Pain Management', 'Mobility Enhancement']
         },
         {
             id: 3,
-            title: "Medical Massage",
-            description: "Therapeutic massage services for pain relief and wellness",
+            title: 'Medical Massage',
+            description: 'Therapeutic massage services for pain relief and wellness',
             icon: <Stethoscope className="w-6 h-6" />,
-            price: "₹2000/session",
+            priceLabel: '₹2000/session',
+            priceValue: 2000,
             rating: 4.7,
-            features: [
-                "Deep Tissue Massage",
-                "Sports Massage",
-                "Rehabilitation Massage",
-                "Wellness Therapy"
-            ]
+            features: ['Deep Tissue Massage', 'Sports Massage', 'Rehabilitation Massage', 'Wellness Therapy']
         },
         {
             id: 4,
-            title: "Health Monitoring",
-            description: "Regular health monitoring and vital signs tracking",
+            title: 'Health Monitoring',
+            description: 'Regular health monitoring and vital signs tracking',
             icon: <Stethoscope className="w-6 h-6" />,
-            price: "₹800/session",
+            priceLabel: '₹800/session',
+            priceValue: 800,
             rating: 4.6,
-            features: [
-                "Vital Signs Monitoring",
-                "Health Reports",
-                "Regular Check-ups",
-                "Emergency Alerts"
-            ]
+            features: ['Vital Signs Monitoring', 'Health Reports', 'Regular Check-ups', 'Emergency Alerts']
         }
     ];
+
+    // Filter based on search query
+    const filteredServices = services
+        .filter((service) =>
+            service.title.toLowerCase().includes(searchQuery.toLowerCase())
+        )
+        .sort((a, b) => {
+            if (sortOption === 'rating') return b.rating - a.rating;
+            if (sortOption === 'price') return a.priceValue - b.priceValue;
+            if (sortOption === 'name') return a.title.localeCompare(b.title);
+            return 0;
+        });
 
     const handleServiceClick = (id) => {
         router.push(`/medical-services/${id}`);
@@ -76,8 +72,7 @@ export default function MedicalServices() {
 
     return (
         <div className="min-h-screen bg-white">
-
-            {/* Hero */}
+            {/* Hero Section */}
             <section className="bg-gradient-to-r from-blue-50 to-white py-16">
                 <div className="max-w-7xl mx-auto px-4 text-center">
                     <h1 className="text-4xl font-bold mb-4 text-gray-900">Professional Medical Services</h1>
@@ -94,25 +89,27 @@ export default function MedicalServices() {
                             className="flex-1 px-4 py-2 border border-gray-300 rounded"
                         />
                         <select
-                            value={selectedService}
-                            onChange={(e) => setSelectedService(e.target.value)}
+                            value={sortOption}
+                            onChange={(e) => setSortOption(e.target.value)}
                             className="w-48 px-4 py-2 border border-gray-300 rounded"
                         >
-                            <option value="">Service Type</option>
-                            <option value="doctor">Doctor Visits</option>
-                            <option value="physio">Physiotherapy</option>
-                            <option value="massage">Medical Massage</option>
-                            <option value="monitoring">Health Monitoring</option>
+                            <option value="">Sort By</option>
+                            <option value="rating">Rating (High to Low)</option>
+                            <option value="price">Price (Low to High)</option>
+                            <option value="name">Name (A-Z)</option>
                         </select>
                     </div>
                 </div>
             </section>
 
-            {/* Services */}
+            {/* Services Grid */}
             <section className="py-16">
                 <div className="max-w-7xl mx-auto px-4 grid md:grid-cols-2 gap-8">
-                    {services.map((service) => (
-                        <div key={service.id} className="border border-gray-200 rounded-lg shadow-sm p-6 hover:shadow-lg transition">
+                    {filteredServices.map((service) => (
+                        <div
+                            key={service.id}
+                            className="border border-gray-200 rounded-lg shadow-sm p-6 hover:shadow-lg transition"
+                        >
                             <div className="flex justify-between items-start mb-4">
                                 <div className="flex items-center space-x-3">
                                     <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center text-blue-700">
@@ -127,9 +124,9 @@ export default function MedicalServices() {
                                     </div>
                                 </div>
                                 <span className="bg-green-100 text-green-700 px-3 py-1 text-sm rounded-full flex items-center">
-                  <Shield className="w-3 h-3 mr-1" />
-                  Verified
-                </span>
+                                    <Shield className="w-3 h-3 mr-1" />
+                                    Verified
+                                </span>
                             </div>
 
                             <p className="text-gray-600 mb-4">{service.description}</p>
@@ -144,7 +141,7 @@ export default function MedicalServices() {
                             </ul>
 
                             <div className="flex justify-between items-center">
-                                <span className="text-lg font-semibold">{service.price}</span>
+                                <span className="text-lg font-semibold">{service.priceLabel}</span>
                                 <button
                                     onClick={() => handleServiceClick(service.id)}
                                     className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
@@ -169,23 +166,23 @@ export default function MedicalServices() {
                     {[
                         {
                             icon: <Shield className="w-8 h-8" />,
-                            title: "Licensed Professionals",
-                            description: "All our medical professionals are fully licensed and certified"
+                            title: 'Licensed Professionals',
+                            description: 'All our medical professionals are fully licensed and certified'
                         },
                         {
                             icon: <Clock className="w-8 h-8" />,
-                            title: "24/7 Availability",
-                            description: "Round-the-clock medical support for emergencies"
+                            title: '24/7 Availability',
+                            description: 'Round-the-clock medical support for emergencies'
                         },
                         {
                             icon: <Star className="w-8 h-8" />,
-                            title: "Quality Care",
-                            description: "Consistently high-quality medical services"
+                            title: 'Quality Care',
+                            description: 'Consistently high-quality medical services'
                         },
                         {
                             icon: <CheckCircle className="w-8 h-8" />,
-                            title: "Verified Reviews",
-                            description: "Real feedback from satisfied patients"
+                            title: 'Verified Reviews',
+                            description: 'Real feedback from satisfied patients'
                         }
                     ].map((item, i) => (
                         <div key={i} className="text-center">
