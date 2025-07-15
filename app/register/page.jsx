@@ -1,10 +1,13 @@
-"use client";
+'use client';
 
 import { useForm } from "react-hook-form";
-import { supabase } from "@/utils/supabaseClient";
+import { supabase } from "../../utils/supabaseClient"; 
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+
+
+
 
 export default function Register() {
     const router = useRouter();
@@ -25,7 +28,7 @@ export default function Register() {
 
         setUploading(true);
 
-        // 1. Upload profile image if selected
+       
         let profilePhotoUrl = "";
         if (data.profilePhoto && data.profilePhoto[0]) {
             const file = data.profilePhoto[0];
@@ -49,7 +52,7 @@ export default function Register() {
             profilePhotoUrl = urlData.publicUrl;
         }
 
-        // 2. Sign up with Supabase Auth
+        
         const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
             email: data.email,
             password: data.password,
@@ -63,7 +66,7 @@ export default function Register() {
 
         const userId = signUpData.user.id;
 
-        // 3. Insert into custom users table
+       
         const { error: dbError } = await supabase.from("users").insert({
             id: userId,
             name: data.name,
