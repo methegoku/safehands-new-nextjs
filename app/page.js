@@ -2,7 +2,7 @@
 import { useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import HeroSection from '../components/HeroSection';
-import Services from './services/page';
+import ServicesOffered from '../components/ServicesOffered';
 import Testimonials from '../components/Testimonials';
 import TopProviders from '../components/TopProviders';
 import Footer from '../components/Footer';
@@ -21,9 +21,7 @@ export default function Home() {
     return (
         <div>
             <HeroSection />
-            <div id="services-section">
-                <Services />
-            </div>
+            <ServicesOffered />
             <TopProviders />
             <Testimonials />
             <Footer />
