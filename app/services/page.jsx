@@ -66,7 +66,7 @@ export default function ServicesPage() {
                         ))}
                     </div>
 
-                    {/* Go to Home Button */}
+                    {/* Go Home Button */}
                     <Link href="/">
             <span className="inline-block bg-gray-800 text-white px-6 py-3 rounded-lg hover:bg-gray-900 transition cursor-pointer">
               Go to Home
